@@ -11,7 +11,7 @@ namespace lava
     {
     }
 
-    auto TransformSystem::begin() -> void
+    auto TransformSystem::update( double ) -> void
     {
         auto entities = registry->view<Transform>().each();
         for (auto [entity, transform] : entities)

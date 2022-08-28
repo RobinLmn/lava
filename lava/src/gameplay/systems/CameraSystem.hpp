@@ -10,6 +10,6 @@ namespace lava
         CameraSystem( entt::registry* );
         
     public:
-        auto begin() -> void override;
+        auto update( double ) -> void override;
     };
 }

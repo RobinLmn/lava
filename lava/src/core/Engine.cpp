@@ -5,15 +5,17 @@ namespace lava
 {
     auto Engine::initialize() -> void
     {
-        auto frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
-        
+        auto frame = (CGRect){ {100.0, 100.0}, {800, 800} };
         device = MTL::CreateSystemDefaultDevice();
+        auto mtkView = MTK::View::alloc()->init( frame, device );
+        
         window = new Window( frame );
         world = new World();
-        view = new View( frame, device, world );
+        view = new View( mtkView, device, world );
         
-        window->setWindowView(view->getView());
+        window->setWindowView( mtkView );
         world->begin();
+        mtkView->setDelegate( view );
     }
 
     auto Engine::run() -> void
@@ -24,6 +26,7 @@ namespace lava
         auto* app = NS::Application::sharedApplication();
         
         clock = new std::chrono::high_resolution_clock();
+        lastTime = clock->now();
         
         app->setDelegate( &delegate );
         app->run();
@@ -33,7 +36,8 @@ namespace lava
 
     auto Engine::update() -> void
     {
-        const auto deltaTime = std::chrono::duration_cast<std::chrono::seconds>(clock->now() - lastTime).count();
+        using seconds = std::chrono::duration<double, std::ratio<1>>;
+        const auto deltaTime = std::chrono::duration_cast<seconds>(clock->now() - lastTime).count();
         lastTime = clock->now();
         
         world->update( deltaTime );

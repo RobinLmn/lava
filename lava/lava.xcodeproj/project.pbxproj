@@ -23,6 +23,7 @@
 		D6617A0C28BADBD20001C95A /* shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = D66179FC28BADBD20001C95A /* shader.metal */; };
 		D6617A0F28BAE48F0001C95A /* TransformSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A0E28BAE48F0001C95A /* TransformSystem.cpp */; };
 		D6617A1628BAE8050001C95A /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A1528BAE8050001C95A /* Math.cpp */; };
+		D6617A1C28BC1D4E0001C95A /* RigidBodySystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A1A28BC1D4E0001C95A /* RigidBodySystem.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -256,6 +257,9 @@
 		D6617A0E28BAE48F0001C95A /* TransformSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TransformSystem.cpp; sourceTree = "<group>"; };
 		D6617A1328BAE7520001C95A /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
 		D6617A1528BAE8050001C95A /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
+		D6617A1828BC1CE80001C95A /* RigidBody.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RigidBody.hpp; sourceTree = "<group>"; };
+		D6617A1A28BC1D4E0001C95A /* RigidBodySystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RigidBodySystem.cpp; sourceTree = "<group>"; };
+		D6617A1B28BC1D4E0001C95A /* RigidBodySystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RigidBodySystem.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -355,6 +359,7 @@
 				D661791228BADBD00001C95A /* Transform.hpp */,
 				D661791328BADBD00001C95A /* Mesh.hpp */,
 				D661791428BADBD00001C95A /* Camera.hpp */,
+				D6617A1828BC1CE80001C95A /* RigidBody.hpp */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -368,6 +373,8 @@
 				D661791928BADBD00001C95A /* CameraSystem.hpp */,
 				D661791728BADBD00001C95A /* MeshSystem.cpp */,
 				D661791828BADBD00001C95A /* MeshSystem.hpp */,
+				D6617A1A28BC1D4E0001C95A /* RigidBodySystem.cpp */,
+				D6617A1B28BC1D4E0001C95A /* RigidBodySystem.hpp */,
 			);
 			path = systems;
 			sourceTree = "<group>";
@@ -895,6 +902,7 @@
 				D6617A0C28BADBD20001C95A /* shader.metal in Sources */,
 				D6617A1628BAE8050001C95A /* Math.cpp in Sources */,
 				D6617A0328BADBD20001C95A /* Renderer.cpp in Sources */,
+				D6617A1C28BC1D4E0001C95A /* RigidBodySystem.cpp in Sources */,
 				D6617A0928BADBD20001C95A /* World.cpp in Sources */,
 				D6617A0428BADBD20001C95A /* Window.cpp in Sources */,
 				D6617A0828BADBD20001C95A /* MeshSystem.cpp in Sources */,

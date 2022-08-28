@@ -13,7 +13,7 @@ namespace lava
     {
     }
 
-    auto CameraSystem::begin() -> void
+    auto CameraSystem::update( double ) -> void
     {
         auto entities = registry->view<Camera, Transform>().each();
         for (auto [entity, camera, transform] : entities)
