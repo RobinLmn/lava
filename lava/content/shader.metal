@@ -4,12 +4,15 @@ using namespace metal;
 struct v2f
 {
     float4 position [[position]];
+    float3 normal;
     half3 color;
 };
 
 struct VertexData
 {
     float3 position;
+    float3 normal;
+    float3 color;
 };
 
 v2f vertex vertexMain( device const VertexData* vertexData [[buffer(0)]],
@@ -17,17 +20,18 @@ v2f vertex vertexMain( device const VertexData* vertexData [[buffer(0)]],
                        constant float4x4& viewProjection [[buffer(2)]],
                        uint vertexId [[vertex_id]] )
 {
-    float4 position = float4( vertexData[ vertexId ].position, 1.0 );
-    position = model * position;
-    position = viewProjection * position;
+    const device VertexData& v = vertexData[ vertexId ];
+    float4 position = float4( v.position, 1.0 );
     
     v2f o;
-    o.position = position;
-    o.color = half3( 1.0 );
+    o.position = viewProjection * model * position;
+    o.color = half3( v.color.rgb );
+    o.normal = v.normal;
+    
     return o;
 }
 
 half4 fragment fragmentMain( v2f in [[stage_in]] )
 {
-    return half4( in.color, 1.0 );
+   return half4( in.color, 1.0 );
 }
