@@ -15,11 +15,11 @@ namespace lava
     {
     }
 
-    auto System::update() -> void
+    auto System::update( double ) -> void
     {
     }
 
-    auto System::shutdown() -> void
+    auto System::end() -> void
     {
     }
 }

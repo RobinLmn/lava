@@ -328,11 +328,11 @@
 			isa = PBXGroup;
 			children = (
 				D661790828BADBD00001C95A /* Engine.hpp */,
+				D661790D28BADBD00001C95A /* Engine.cpp */,
+				D661790B28BADBD00001C95A /* Window.hpp */,
 				D661790928BADBD00001C95A /* Window.cpp */,
 				D661790A28BADBD00001C95A /* System.hpp */,
-				D661790B28BADBD00001C95A /* Window.hpp */,
 				D661790C28BADBD00001C95A /* System.cpp */,
-				D661790D28BADBD00001C95A /* Engine.cpp */,
 				D661790E28BADBD00001C95A /* Util.hpp */,
 			);
 			path = core;

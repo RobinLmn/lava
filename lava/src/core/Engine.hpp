@@ -8,6 +8,8 @@
 
 #include <gameplay/World.hpp>
 
+#include <core/System.hpp>
+
 namespace lava
 {
     class Engine final
@@ -27,6 +29,7 @@ namespace lava
         
         auto run() -> void;
         auto initialize() -> void;
+        auto update() -> void;
         auto shutdown() -> void;
      
     private:
@@ -37,6 +40,9 @@ namespace lava
         MTL::Device* device;
         View* view;
         World* world;
+        
+        std::chrono::high_resolution_clock* clock;
+        std::chrono::steady_clock::time_point lastTime;
         
     private:
         class AppDelegate final : public NS::ApplicationDelegate

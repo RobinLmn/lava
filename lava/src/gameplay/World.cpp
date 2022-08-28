@@ -10,12 +10,12 @@
 #include <gameplay/systems/MeshSystem.hpp>
 #include <gameplay/systems/TransformSystem.hpp>
 
-namespace lava
+namespace
 {
-    auto World::initialize() -> void
+    using namespace lava;
+
+    auto makeScene( entt::registry* registry )
     {
-        registry = new entt::registry();
-        
         const auto entity = registry->create();
         
         auto& mesh = registry->emplace<Mesh>( entity );
@@ -24,7 +24,7 @@ namespace lava
         auto& transform = registry->emplace<Transform>( entity );
         transform.position = {0.f, 0.f, -5.f};
         transform.scale = {0.01f, 0.01f, 0.01f};
-        transform.rotation = {10.f, 10.f, 10.f};
+        transform.rotation = {-10.f, -10.f, -10.f};
         
         const auto camera = registry->create();
         
@@ -39,15 +39,46 @@ namespace lava
         cameraComponent.far = 500.f;
         cameraComponent.aspect = 1.f;
         cameraComponent.fov = math::degreesToRadian( 45.f );
+    }
+}
+namespace lava
+{
+    World::World()
+    {
+        registry = new entt::registry();
         
-        TransformSystem transformSys{ registry };
-        transformSys.begin();
+        systems =
+        {
+            new MeshSystem( registry ),
+            new TransformSystem( registry ),
+            new CameraSystem( registry )
+        };
         
-        MeshSystem meshSys{ registry };
-        meshSys.begin();
-        
-        CameraSystem camSys{ registry };
-        camSys.begin();
+        makeScene( registry );
+    }
+
+    auto World::begin() -> void
+    {
+        for (auto system: systems)
+        {
+            system->begin();
+        }
+    }
+
+    auto World::update( double deltaTime ) -> void
+    {
+        for (auto system: systems)
+        {
+            system->update( deltaTime );
+        }
+    }
+
+    auto World::end() -> void
+    {
+        for (auto system: systems)
+        {
+            system->end();
+        }
     }
 
     World::~World()
