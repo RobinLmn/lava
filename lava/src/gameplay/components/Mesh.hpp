@@ -7,9 +7,16 @@
 
 namespace lava
 {
+    struct Vertex
+    {
+        simd::float3 position;
+        simd::float3 normal;
+        simd::float3 color;
+    };
+
     struct Mesh
     {
-        std::vector<simd::float3> vertices;
+        std::vector<Vertex> vertices;
         std::vector<uint16_t> indices;
         
         MTL::Buffer* vertexBuffer;

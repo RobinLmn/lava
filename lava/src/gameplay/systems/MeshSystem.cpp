@@ -5,6 +5,8 @@
 #include <tinyobjloader/tiny_obj_loader.h>
 #include <core/Engine.hpp>
 
+#include <iostream>
+
 namespace lava
 {
     MeshSystem::MeshSystem( entt::registry* registry )
@@ -17,7 +19,7 @@ namespace lava
         const auto entities = registry->view<Mesh>().each();
         for (auto [entity, mesh] : entities)
         {
-            const auto vertexDataSize = mesh.vertices.size() * sizeof( simd::float3 );
+            const auto vertexDataSize = mesh.vertices.size() * sizeof( Vertex );
             const auto indexDataSize = mesh.indices.size() * sizeof( uint16_t );
             
             mesh.vertexBuffer = Engine::get().getDevice()->newBuffer( vertexDataSize, MTL::ResourceStorageModeManaged );
@@ -33,35 +35,71 @@ namespace lava
 
     auto MeshSystem::loadMesh( Mesh* mesh, const char * path) -> void
     {
-        tinyobj::attrib_t attrib;
-        std::vector<tinyobj::shape_t> shapes;
-        std::vector<tinyobj::material_t> materials;
-        
-        tinyobj::LoadObj( &attrib, &shapes, &materials, nullptr, nullptr, path );
-        
+        tinyobj::ObjReaderConfig readerConfig;
+        readerConfig.mtl_search_path = "/Users/robinleman/GitHub/lava/lava/content/models";
+        tinyobj::ObjReader reader;
+
+        if (!reader.ParseFromFile( path, readerConfig ))
+        {
+            if (!reader.Error().empty())
+            {
+                std::cerr << "TinyObjReader: " << reader.Error();
+            }
+            exit(1);
+        }
+
+        if (!reader.Warning().empty())
+        {
+            std::cout << "TinyObjReader: " << reader.Warning();
+        }
+
+        auto& attrib = reader.GetAttrib();
+        auto& shapes = reader.GetShapes();
+        auto& materials = reader.GetMaterials();
+
         size_t i = 0;
         for (size_t s = 0; s < shapes.size(); s++)
         {
-          size_t index_offset = 0;
-          for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
-          {
-            size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
-            // Loop over vertices in the face.
-            for (size_t v = 0; v < fv; v++)
+            size_t index_offset = 0;
+            for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
             {
-                // position
-                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-                tinyobj::real_t vx = attrib.vertices[3*size_t(idx.vertex_index)+0];
-                tinyobj::real_t vy = attrib.vertices[3*size_t(idx.vertex_index)+1];
-                tinyobj::real_t vz = attrib.vertices[3*size_t(idx.vertex_index)+2];
-                
-                simd::float3 pos{vx, vy, vz};
-                mesh->vertices.emplace_back(pos);
-                mesh->indices.emplace_back(i);
-                i++;
+                size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
+                size_t materialID = shapes[s].mesh.material_ids[f];
+
+                // Loop over vertices in the face.
+                for (size_t v = 0; v < fv; v++)
+                {
+                    // position
+                    tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+                    tinyobj::real_t vx = attrib.vertices[3*size_t(idx.vertex_index)+0];
+                    tinyobj::real_t vy = attrib.vertices[3*size_t(idx.vertex_index)+1];
+                    tinyobj::real_t vz = attrib.vertices[3*size_t(idx.vertex_index)+2];
+
+                    tinyobj::real_t nx = 0;
+                    tinyobj::real_t ny = 0;
+                    tinyobj::real_t nz = 0;
+
+                    if (idx.normal_index >= 0)
+                    {
+                        nx = attrib.normals[3*size_t(idx.normal_index)+0];
+                        ny = attrib.normals[3*size_t(idx.normal_index)+1];
+                        nz = attrib.normals[3*size_t(idx.normal_index)+2];
+                    }
+
+                    Vertex vertex;
+                    vertex.position = {vx, vy, vz};
+                    vertex.normal = {nx, ny, nz};
+                    
+                    auto color = materials[materialID].diffuse;
+                    vertex.color = { color[0], color[1], color[2] } ;
+
+                    mesh->vertices.emplace_back(vertex);
+                    mesh->indices.emplace_back(i);
+
+                    i++;
+                }
+                index_offset += fv;
             }
-            index_offset += fv;
-          }
         }
     }
 }
