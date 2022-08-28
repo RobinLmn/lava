@@ -27,9 +27,6 @@ namespace lava
             *modelBufferData = transform.model;
             
             transform.modelBuffer->didModifyRange( NS::Range::Make( 0, transformDataSize ) );
-            
-            
-
         }
     }
 }

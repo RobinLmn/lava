@@ -11,8 +11,8 @@ namespace lava
         
     public:
         virtual auto begin() -> void;
-        virtual auto update() -> void;
-        virtual auto shutdown() -> void;
+        virtual auto update( double ) -> void;
+        virtual auto end() -> void;
         
     protected:
         entt::registry* registry;

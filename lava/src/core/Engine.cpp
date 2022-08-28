@@ -1,4 +1,5 @@
 #include "Engine.hpp"
+#include <chrono>
 
 namespace lava
 {
@@ -12,7 +13,7 @@ namespace lava
         view = new View( frame, device, world );
         
         window->setWindowView(view->getView());
-        world->initialize();
+        world->begin();
     }
 
     auto Engine::run() -> void
@@ -22,14 +23,25 @@ namespace lava
         auto* autoReleasePool = NS::AutoreleasePool::alloc()->init();
         auto* app = NS::Application::sharedApplication();
         
+        clock = new std::chrono::high_resolution_clock();
+        
         app->setDelegate( &delegate );
         app->run();
 
         autoReleasePool->release();
     }
 
+    auto Engine::update() -> void
+    {
+        const auto deltaTime = std::chrono::duration_cast<std::chrono::seconds>(clock->now() - lastTime).count();
+        lastTime = clock->now();
+        
+        world->update( deltaTime );
+    }
+
     auto Engine::shutdown() -> void
     {
+        world->end();
         device->release();
         
         delete window;

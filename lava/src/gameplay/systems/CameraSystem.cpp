@@ -20,7 +20,7 @@ namespace lava
         {
             const auto projection = math::perspective( math::degreesToRadian( camera.fov ), camera.aspect, camera.near, camera.far);
             const auto view = transform.model;
-            camera.viewProjection = view * projection;
+            camera.viewProjection = projection * view;
             
             const auto cameraDataSize = sizeof( simd::float4x4 );
             

@@ -1,4 +1,5 @@
 #include "View.hpp"
+#include "Engine.hpp"
 
 namespace lava
 {
@@ -42,6 +43,7 @@ namespace lava
         auto commandBuffer = commandQueue->commandBuffer();
         auto encoder = commandBuffer->renderCommandEncoder( view->currentRenderPassDescriptor() );
         
+        Engine::get().update();
         renderer->draw( encoder, world );
 
         encoder->endEncoding();
