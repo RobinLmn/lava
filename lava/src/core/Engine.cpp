@@ -9,9 +9,12 @@ namespace lava
         device = MTL::CreateSystemDefaultDevice();
         auto mtkView = MTK::View::alloc()->init( frame, device );
         
+        input = new Input();
+        
         window = new Window( frame );
         world = new World();
         view = new View( mtkView, device, world );
+        
         
         window->setWindowView( mtkView );
         world->begin();
@@ -43,11 +46,37 @@ namespace lava
         world->update( deltaTime );
     }
 
+    auto Engine::get() -> Engine&
+    {
+        static Engine engine;
+        return engine;
+    }
+
+    auto Engine::getDevice() -> MTL::Device*
+    {
+        return Engine::get().device;
+    }
+
+    auto Engine::isKeyPressed( Key key ) -> bool
+    {
+        return Engine::get().input->isKeyPressed( key );
+    }
+
+    auto Engine::setOnMouseScroll( std::function<void(float, float)> callback ) -> void
+    {
+        Engine::get().input->setOnMouseScroll( callback );
+    }
+    auto Engine::setOnMouseMove( std::function<void(float, float)> callback) -> void
+    {
+        Engine::get().input->setOnMouseMove( callback );
+    }
+
     auto Engine::shutdown() -> void
     {
         world->end();
         device->release();
         
+        delete input;
         delete window;
         delete view;
         delete world;

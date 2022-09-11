@@ -1,21 +1,21 @@
 #include "Renderer.hpp"
 
-#include <core/Util.hpp>
+#include <util/Util.hpp>
 
-#include <gameplay/components/Transform.hpp>
-#include <gameplay/components/Mesh.hpp>
-#include <gameplay/components/Camera.hpp>
+#include <gameplay/components/TransformComponent.hpp>
+#include <gameplay/components/MeshComponent.hpp>
+#include <gameplay/components/CameraComponent.hpp>
 
 namespace
 {
     auto getCameraBuffer( const lava::World* world ) -> MTL::Buffer*
     {
-        const auto entities = world->getRegistry()->view<const lava::Camera>().each();
-        for ( auto [entity, camera] : entities )
+        const auto entities = world->getRegistry()->view<const lava::CameraComponent, const lava::CameraBufferComponent>().each();
+        for ( auto [entity, camera, buffer] : entities )
         {
             if ( camera.isMainCamera )
             {
-                return camera.cameraBuffer;
+                return buffer.cameraBuffer;
             }
         }
         return nullptr;
@@ -77,10 +77,13 @@ namespace lava
         
         const auto cameraBuffer = getCameraBuffer( world );
         
-        const auto entities = world->getRegistry()->view<const Mesh, const Transform>().each();
-        for ( auto [entity, mesh, transform] : entities )
+        const auto entities = world->getRegistry()->view< const StaticMeshComponent,
+                                                          const MeshBufferComponent,
+                                                          const TransformBufferComponent >().each();
+        
+        for ( auto [entity, mesh, buffer, transform] : entities )
         {
-            encoder->setVertexBuffer( mesh.vertexBuffer, 0, 0 );
+            encoder->setVertexBuffer( buffer.vertexBuffer, 0, 0 );
             encoder->setVertexBuffer( transform.modelBuffer, 0, 1 );
             encoder->setVertexBuffer( cameraBuffer, 0, 2 );
             
@@ -90,7 +93,7 @@ namespace lava
             encoder->drawIndexedPrimitives( MTL::PrimitiveType::PrimitiveTypeTriangle,
                                             mesh.indices.size(),
                                             MTL::IndexType::IndexTypeUInt16,
-                                            mesh.indexBuffer,
+                                            buffer.indexBuffer,
                                             0,
                                             1 );
         }

@@ -4,12 +4,13 @@
 
 namespace lava
 {
-    class TransformSystem final : public System
+    class TransformBufferSystem final : public System
     {
     public:
-        TransformSystem( entt::registry* );
+        TransformBufferSystem( entt::registry* );
         
     public:
+        auto begin() -> void override;
         auto update( double ) -> void override;
     };
 }

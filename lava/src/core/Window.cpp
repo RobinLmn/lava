@@ -1,6 +1,6 @@
 #include "Window.hpp"
 
-#include <core/Util.hpp>
+#include <util/Util.hpp>
 
 namespace lava
 {

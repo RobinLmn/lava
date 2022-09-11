@@ -1,15 +1,15 @@
 #pragma once
-
 #include <core/System.hpp>
 
 namespace lava
 {
-    class CameraSystem final : public System
+    class CameraBufferSystem final : public System
     {
     public:
-        CameraSystem( entt::registry* );
+        CameraBufferSystem ( entt::registry* );
         
     public:
+        auto begin() -> void override;
         auto update( double ) -> void override;
     };
 }

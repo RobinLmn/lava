@@ -1,39 +1,49 @@
-#include "MeshSystem.hpp"
+#include "MeshBufferSystem.hpp"
 
 #include <Metal/Metal.hpp>
 #include <MetalKit/MetalKit.hpp>
 #include <tinyobjloader/tiny_obj_loader.h>
 #include <core/Engine.hpp>
-
 #include <iostream>
+
+#include <gameplay/components/MeshComponent.hpp>
 
 namespace lava
 {
-    MeshSystem::MeshSystem( entt::registry* registry )
+    MeshBufferSystem::MeshBufferSystem( entt::registry* registry )
             : System(registry)
     {
     }
 
-    auto MeshSystem::begin() -> void
+    auto MeshBufferSystem::begin() -> void
     {
-        const auto entities = registry->view<Mesh>().each();
+        const auto entitiesToGenerate = registry->view<MeshFromPathComponent>().each();
+        for (auto [entity, pathComponent] : entitiesToGenerate)
+        {
+            auto& mesh = registry->emplace<StaticMeshComponent>(entity);
+            loadMesh( &mesh, pathComponent.path.c_str() );
+        }
+        
+        const auto entities = registry->view<StaticMeshComponent>().each();
         for (auto [entity, mesh] : entities)
         {
+            auto& buffer = registry->emplace<MeshBufferComponent>( entity );
+            
             const auto vertexDataSize = mesh.vertices.size() * sizeof( Vertex );
             const auto indexDataSize = mesh.indices.size() * sizeof( uint16_t );
             
-            mesh.vertexBuffer = Engine::get().getDevice()->newBuffer( vertexDataSize, MTL::ResourceStorageModeManaged );
-            mesh.indexBuffer = Engine::get().getDevice()->newBuffer( indexDataSize, MTL::ResourceStorageModeManaged );
+            buffer.vertexBuffer = Engine::getDevice()->newBuffer( vertexDataSize, MTL::ResourceStorageModeManaged );
+            buffer.indexBuffer = Engine::getDevice()->newBuffer( indexDataSize, MTL::ResourceStorageModeManaged );
             
-            memcpy( mesh.vertexBuffer->contents(), mesh.vertices.data(), vertexDataSize );
-            memcpy( mesh.indexBuffer->contents(), mesh.indices.data(), indexDataSize );
+            memcpy( buffer.vertexBuffer->contents(), mesh.vertices.data(), vertexDataSize );
+            memcpy( buffer.indexBuffer->contents(), mesh.indices.data(), indexDataSize );
 
-            mesh.vertexBuffer->didModifyRange( NS::Range::Make( 0, mesh.vertexBuffer->length() ) );
-            mesh.indexBuffer->didModifyRange( NS::Range::Make( 0, mesh.indexBuffer->length() ) );
+            buffer.vertexBuffer->didModifyRange( NS::Range::Make( 0, buffer.vertexBuffer->length() ) );
+            buffer.indexBuffer->didModifyRange( NS::Range::Make( 0, buffer.indexBuffer->length() ) );
         }
     }
 
-    auto MeshSystem::loadMesh( Mesh* mesh, const char * path) -> void
+    auto MeshBufferSystem::loadMesh( StaticMeshComponent* mesh, const char * path) -> void
     {
         tinyobj::ObjReaderConfig readerConfig;
         readerConfig.mtl_search_path = "/Users/robinleman/GitHub/lava/lava/content/models";

@@ -3,10 +3,10 @@
 
 namespace lava
 {
-    class RigidBodySystem : public System
+    class CameraControlSystem final : public System
     {
     public:
-        RigidBodySystem( entt::registry* );
+        CameraControlSystem( entt::registry* );
         
     public:
         auto update( double ) -> void override;

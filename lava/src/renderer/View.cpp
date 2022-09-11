@@ -9,7 +9,7 @@ namespace lava
         , renderer( new Renderer( device ) )
     {
         view->setColorPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
-        view->setClearColor( MTL::ClearColor::Make( 0.1, 0.1, 0.1, 1.0 ) );
+        view->setClearColor( MTL::ClearColor::Make( 0.53, 0.81, 0.98, 1.0 ) );
         
         view->setDepthStencilPixelFormat( MTL::PixelFormat::PixelFormatDepth16Unorm );
         view->setClearDepth( 1.0f );
