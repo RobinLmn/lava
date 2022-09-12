@@ -79,11 +79,12 @@ namespace lava
                 // Loop over vertices in the face.
                 for (size_t v = 0; v < fv; v++)
                 {
+                    tinyobj::index_t idx = shapes[s].mesh.indices[index_offset];
+                    
                     // position
-                    tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-                    tinyobj::real_t vx = attrib.vertices[3*size_t(idx.vertex_index)+0];
-                    tinyobj::real_t vy = attrib.vertices[3*size_t(idx.vertex_index)+1];
-                    tinyobj::real_t vz = attrib.vertices[3*size_t(idx.vertex_index)+2];
+                    tinyobj::real_t vx = attrib.vertices[3 * idx.vertex_index + 0];
+                    tinyobj::real_t vy = attrib.vertices[3 * idx.vertex_index + 1];
+                    tinyobj::real_t vz = attrib.vertices[3 * idx.vertex_index + 2];
 
                     tinyobj::real_t nx = 0;
                     tinyobj::real_t ny = 0;
@@ -91,9 +92,9 @@ namespace lava
 
                     if (idx.normal_index >= 0)
                     {
-                        nx = attrib.normals[3*size_t(idx.normal_index)+0];
-                        ny = attrib.normals[3*size_t(idx.normal_index)+1];
-                        nz = attrib.normals[3*size_t(idx.normal_index)+2];
+                        nx = attrib.normals[3 * idx.normal_index +0];
+                        ny = attrib.normals[3 * idx.normal_index +1];
+                        nz = attrib.normals[3 * idx.normal_index +2];
                     }
 
                     Vertex vertex;
@@ -101,14 +102,14 @@ namespace lava
                     vertex.normal = {nx, ny, nz};
                     
                     auto color = materials[materialID].diffuse;
-                    vertex.color = { color[0], color[1], color[2] } ;
+                    vertex.color = { 0.9f, 0.9f, 0.9f } ;
 
                     mesh->vertices.emplace_back(vertex);
                     mesh->indices.emplace_back(i);
 
+                    index_offset++;
                     i++;
                 }
-                index_offset += fv;
             }
         }
     }

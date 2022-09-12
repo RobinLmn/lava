@@ -18,6 +18,7 @@ namespace lava
             for (auto [entity, camera, transform] : entities)
             {
                 if (!camera.isMainCamera) continue;
+                if (!Engine::isKeyPressed( Key::LControl )) return;
                 
                 transform.rotation += {dy, dx, 0};
                 return;
@@ -51,8 +52,8 @@ namespace lava
             if (Engine::isKeyPressed( Key::S )) transform.position.z -= camera.speed * dt * 20.f;
             if (Engine::isKeyPressed( Key::A )) transform.position.x += camera.speed * dt;
             if (Engine::isKeyPressed( Key::D )) transform.position.x -= camera.speed * dt;
-            if (Engine::isKeyPressed( Key::Space )) transform.position.y -= camera.speed * dt;
-            if (Engine::isKeyPressed( Key::LShift )) transform.position.y += camera.speed * dt;
+            if (Engine::isKeyPressed( Key::Space )) transform.position.y -= camera.speed * dt * 0.2f;
+            if (Engine::isKeyPressed( Key::LShift )) transform.position.y += camera.speed * dt * 0.2f;
             
             return;
         }

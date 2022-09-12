@@ -9,7 +9,8 @@ namespace  lava
         S,
         D,
         LShift,
-        Space
+        Space,
+        LControl,
     };
 }
 

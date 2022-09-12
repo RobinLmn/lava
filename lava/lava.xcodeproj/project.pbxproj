@@ -275,6 +275,8 @@
 		D6617A3B28CE7CF90001C95A /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
 		D6617A3C28CE7CF90001C95A /* 3DTurtle.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 3DTurtle.mtl; sourceTree = "<group>"; };
 		D6617A3D28CE7CF90001C95A /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
+		D6617A3E28CEDE7D0001C95A /* ChessKing.obj.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChessKing.obj.mtl; sourceTree = "<group>"; };
+		D6617A3F28CEDE7D0001C95A /* ChessKing.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChessKing.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -840,6 +842,8 @@
 		D66179FD28BADBD20001C95A /* models */ = {
 			isa = PBXGroup;
 			children = (
+				D6617A3F28CEDE7D0001C95A /* ChessKing.obj */,
+				D6617A3E28CEDE7D0001C95A /* ChessKing.obj.mtl */,
 				D6617A3C28CE7CF90001C95A /* 3DTurtle.mtl */,
 				D6617A3A28CE7CF90001C95A /* 3DTurtle.obj */,
 				D6617A3B28CE7CF90001C95A /* sphere.obj */,

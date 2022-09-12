@@ -42,17 +42,30 @@ namespace
         cameraComponent.sensitivity = 1.f;
     }
 
-    auto make( entt::registry* registry, const char* path )
+    auto makeTurtle( entt::registry* registry )
     {
         const auto entity = registry->create();
         
         auto& entityMesh = registry->emplace<MeshFromPathComponent>( entity );
-        entityMesh.path = path;
+        entityMesh.path = "/Users/robinleman/GitHub/lava/lava/content/models/3DTurtle.obj";
         
         auto& entityTransform = registry->emplace<TransformComponent>( entity );
         entityTransform.position = {0.f, 0.f, 0.f};
         entityTransform.scale = {0.1f, 0.1f, 0.1f};
         entityTransform.rotation = {0.f, 180.f, 0.f};
+    }
+
+    auto makeChessKing( entt::registry* registry )
+    {
+        const auto entity = registry->create();
+        
+        auto& entityMesh = registry->emplace<MeshFromPathComponent>( entity );
+        entityMesh.path = "/Users/robinleman/GitHub/lava/lava/content/models/ChessKing.obj";
+        
+        auto& entityTransform = registry->emplace<TransformComponent>( entity );
+        entityTransform.position = {0.f, 0.f, 0.f};
+        entityTransform.scale = {1.f, 1.f, 1.f};
+        entityTransform.rotation = {0.f, 0.f, 0.f};
     }
 }
 
@@ -61,6 +74,6 @@ namespace lava
     auto Scene::instantiate( entt::registry* registry ) -> void
     {
         makeCamera( registry );
-        makeCube( registry, (simd::float3){0, 0, 0});
+        makeChessKing( registry );
     }
 }

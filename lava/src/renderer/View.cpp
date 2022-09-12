@@ -11,7 +11,7 @@ namespace lava
         view->setColorPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
         view->setClearColor( MTL::ClearColor::Make( 0.53, 0.81, 0.98, 1.0 ) );
         
-        view->setDepthStencilPixelFormat( MTL::PixelFormat::PixelFormatDepth16Unorm );
+        view->setDepthStencilPixelFormat( MTL::PixelFormat::PixelFormatDepth32Float );
         view->setClearDepth( 1.0f );
     }
 

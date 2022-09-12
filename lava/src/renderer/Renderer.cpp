@@ -49,7 +49,7 @@ namespace lava
         descriptor->setFragmentFunction( fragmentFunction );
         
         descriptor->colorAttachments()->object( 0 )->setPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
-        descriptor->setDepthAttachmentPixelFormat( MTL::PixelFormat::PixelFormatDepth16Unorm );
+        descriptor->setDepthAttachmentPixelFormat( MTL::PixelFormat::PixelFormatDepth32Float );
         
         NS::Error* error = nullptr;
         pipelineState = device->newRenderPipelineState( descriptor, &error );
@@ -62,9 +62,9 @@ namespace lava
     auto Renderer::buildDepthStencilStates() -> void
     {
         auto* descriptor = MTL::DepthStencilDescriptor::alloc()->init();
-        descriptor->setDepthCompareFunction( MTL::CompareFunction::CompareFunctionLess );
+        descriptor->setDepthCompareFunction( MTL::CompareFunction::CompareFunctionLessEqual );
         descriptor->setDepthWriteEnabled( true );
-
+        
         depthStencilState = device->newDepthStencilState( descriptor );
 
         descriptor->release();
@@ -74,6 +74,10 @@ namespace lava
     {
         encoder->setRenderPipelineState( pipelineState );
         encoder->setDepthStencilState( depthStencilState );
+        
+        encoder->setCullMode( MTL::CullMode::CullModeBack );
+        encoder->setTriangleFillMode( MTL::TriangleFillMode::TriangleFillModeFill );
+        encoder->setFrontFacingWinding( MTL::WindingCounterClockwise );
         
         const auto cameraBuffer = getCameraBuffer( world );
         
@@ -87,15 +91,10 @@ namespace lava
             encoder->setVertexBuffer( transform.modelBuffer, 0, 1 );
             encoder->setVertexBuffer( cameraBuffer, 0, 2 );
             
-            encoder->setCullMode( MTL::CullModeBack );
-            encoder->setFrontFacingWinding( MTL::Winding::WindingCounterClockwise );
-
-            encoder->drawIndexedPrimitives( MTL::PrimitiveType::PrimitiveTypeTriangle,
-                                            mesh.indices.size(),
-                                            MTL::IndexType::IndexTypeUInt16,
-                                            buffer.indexBuffer,
-                                            0,
-                                            1 );
+            encoder->drawPrimitives(  MTL::PrimitiveType::PrimitiveTypeTriangle,
+                                      0,
+                                      mesh.vertices.size(),
+                                      1 );
         }
     }
 }

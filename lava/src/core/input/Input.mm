@@ -51,6 +51,8 @@ namespace lava
             return [inputWrapper->inputProxy isKeyPressed: GCKeyCodeLeftShift];
         case Key::Space:
             return [inputWrapper->inputProxy isKeyPressed: GCKeyCodeSpacebar];
+        case Key::LControl:
+            return [inputWrapper->inputProxy isKeyPressed: GCKeyCodeLeftControl];
         }
     }
 }

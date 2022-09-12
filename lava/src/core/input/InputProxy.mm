@@ -41,7 +41,6 @@
     
     mouseInput.scroll.valueChangedHandler = ^(GCControllerDirectionPad* cursor, float deltaX, float deltaY)
     {
-        NSLog(@"dx : %f dy : %f", deltaX, deltaY);
         self.onMouseScroll(deltaX, deltaY);
     };
 }
