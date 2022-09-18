@@ -4,8 +4,8 @@
 #include <core/input/Key.hpp>
 #include <util/Math.hpp>
 
-#include <gameplay/components/TransformComponent.hpp>
-#include <gameplay/components/CameraComponent.hpp>
+#include <gameplay/components/Transform.hpp>
+#include <gameplay/components/Camera.hpp>
 
 namespace lava
 {
@@ -14,7 +14,7 @@ namespace lava
     {
         auto onMouseMove = [registry](float dx, float dy)
         {
-            auto entities = registry->view<CameraComponent, TransformComponent>().each();
+            auto entities = registry->view<const Camera, Transform>().each();
             for (auto [entity, camera, transform] : entities)
             {
                 if (!camera.isMainCamera) continue;
@@ -27,7 +27,7 @@ namespace lava
         
         auto onMouseScroll = [registry](float dx, float dy)
         {
-            auto entities = registry->view<CameraComponent>().each();
+            auto entities = registry->view<Camera>().each();
             for (auto [entity, camera] : entities)
             {
                 if (!camera.isMainCamera) continue;
@@ -43,7 +43,7 @@ namespace lava
 
     auto CameraControlSystem::update( double dt ) -> void
     {
-        auto entities = registry->view<CameraComponent, TransformComponent>().each();
+        auto entities = registry->view<Camera, Transform>().each();
         for (auto [entity, camera, transform] : entities)
         {
             if (!camera.isMainCamera) continue;
@@ -52,8 +52,8 @@ namespace lava
             if (Engine::isKeyPressed( Key::S )) transform.position.z -= camera.speed * dt * 20.f;
             if (Engine::isKeyPressed( Key::A )) transform.position.x += camera.speed * dt;
             if (Engine::isKeyPressed( Key::D )) transform.position.x -= camera.speed * dt;
-            if (Engine::isKeyPressed( Key::Space )) transform.position.y -= camera.speed * dt * 0.2f;
-            if (Engine::isKeyPressed( Key::LShift )) transform.position.y += camera.speed * dt * 0.2f;
+            if (Engine::isKeyPressed( Key::Space )) transform.position.y -= camera.speed * dt;
+            if (Engine::isKeyPressed( Key::LShift )) transform.position.y += camera.speed * dt;
             
             return;
         }

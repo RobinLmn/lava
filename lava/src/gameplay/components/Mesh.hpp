@@ -15,19 +15,13 @@ namespace lava
         simd::float3 color;
     };
 
-    struct StaticMeshComponent
+    struct StaticMesh
     {
         std::vector<Vertex> vertices;
         std::vector<uint16_t> indices;
     };
 
-    struct MeshBufferComponent
-    {
-        MTL::Buffer* vertexBuffer;
-        MTL::Buffer* indexBuffer;
-    };
-
-    struct MeshFromPathComponent
+    struct MeshPath
     {
         std::string path;
     };

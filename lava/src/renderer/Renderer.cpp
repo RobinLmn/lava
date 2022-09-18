@@ -2,21 +2,21 @@
 
 #include <util/Util.hpp>
 
-#include <gameplay/components/TransformComponent.hpp>
-#include <gameplay/components/MeshComponent.hpp>
-#include <gameplay/components/CameraComponent.hpp>
+#include <gameplay/components/Transform.hpp>
+#include <gameplay/components/Mesh.hpp>
+#include <gameplay/components/Camera.hpp>
+#include <gameplay/components/RenderData.hpp>
 
 namespace
 {
-    auto getCameraBuffer( const lava::World* world ) -> MTL::Buffer*
+    using namespace lava;
+
+    auto getUniformBuffer( const lava::World* world ) -> MTL::Buffer*
     {
-        const auto entities = world->getRegistry()->view<const lava::CameraComponent, const lava::CameraBufferComponent>().each();
-        for ( auto [entity, camera, buffer] : entities )
+        const auto entities = world->getRegistry()->view<const lava::UniformBuffer>().each();
+        for ( auto [entity, uniformBuffer] : entities )
         {
-            if ( camera.isMainCamera )
-            {
-                return buffer.cameraBuffer;
-            }
+            return uniformBuffer.buffer;
         }
         return nullptr;
     }
@@ -79,22 +79,16 @@ namespace lava
         encoder->setTriangleFillMode( MTL::TriangleFillMode::TriangleFillModeFill );
         encoder->setFrontFacingWinding( MTL::WindingCounterClockwise );
         
-        const auto cameraBuffer = getCameraBuffer( world );
+        const auto& uniformBuffer = getUniformBuffer( world );
         
-        const auto entities = world->getRegistry()->view< const StaticMeshComponent,
-                                                          const MeshBufferComponent,
-                                                          const TransformBufferComponent >().each();
-        
-        for ( auto [entity, mesh, buffer, transform] : entities )
+        const auto entities = world->getRegistry()->view<const StaticMesh, const MeshBuffer, const ObjectBuffer>().each();
+        for ( auto [entity, mesh, meshBuffer, objectBuffer] : entities )
         {
-            encoder->setVertexBuffer( buffer.vertexBuffer, 0, 0 );
-            encoder->setVertexBuffer( transform.modelBuffer, 0, 1 );
-            encoder->setVertexBuffer( cameraBuffer, 0, 2 );
+            encoder->setVertexBuffer( meshBuffer.vertices, 0, 0 );
+            encoder->setVertexBuffer( objectBuffer.buffer, 0, 1 );
+            encoder->setVertexBuffer( uniformBuffer, 0, 2 );
             
-            encoder->drawPrimitives(  MTL::PrimitiveType::PrimitiveTypeTriangle,
-                                      0,
-                                      mesh.vertices.size(),
-                                      1 );
+            encoder->drawPrimitives(  MTL::PrimitiveType::PrimitiveTypeTriangle, 0, mesh.vertices.size(), 1 );
         }
     }
 }

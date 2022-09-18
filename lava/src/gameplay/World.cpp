@@ -1,10 +1,9 @@
 #include "World.hpp"
 #include <gameplay/Scene.hpp>
 
-#include <gameplay/systems/MeshBufferSystem.hpp>
-#include <gameplay/systems/TransformBufferSystem.hpp>
-#include <gameplay/systems/CameraBufferSystem.hpp>
+#include <gameplay/systems/MeshLoadingSystem.hpp>
 #include <gameplay/systems/CameraControlSystem.hpp>
+#include <gameplay/systems/BufferSystem.hpp>
 
 namespace lava
 {
@@ -16,9 +15,8 @@ namespace lava
         systems =
         {
             new CameraControlSystem( registry ),
-            new TransformBufferSystem( registry ),
-            new CameraBufferSystem( registry ),
-            new MeshBufferSystem( registry ),
+            new MeshLoadingSystem( registry ),
+            new BufferSystem( registry ),
         };
     }
 

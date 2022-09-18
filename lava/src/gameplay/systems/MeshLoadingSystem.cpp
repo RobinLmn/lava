@@ -1,49 +1,29 @@
-#include "MeshBufferSystem.hpp"
+#include "MeshLoadingSystem.hpp"
 
-#include <Metal/Metal.hpp>
-#include <MetalKit/MetalKit.hpp>
 #include <tinyobjloader/tiny_obj_loader.h>
 #include <core/Engine.hpp>
 #include <iostream>
 
-#include <gameplay/components/MeshComponent.hpp>
+#include <gameplay/components/Mesh.hpp>
 
 namespace lava
 {
-    MeshBufferSystem::MeshBufferSystem( entt::registry* registry )
+    MeshLoadingSystem::MeshLoadingSystem( entt::registry* registry )
             : System(registry)
     {
     }
 
-    auto MeshBufferSystem::begin() -> void
+    auto MeshLoadingSystem::begin() -> void
     {
-        const auto entitiesToGenerate = registry->view<MeshFromPathComponent>().each();
-        for (auto [entity, pathComponent] : entitiesToGenerate)
+        const auto entities = registry->view<const MeshPath>().each();
+        for (auto [entity, pathComponent] : entities)
         {
-            auto& mesh = registry->emplace<StaticMeshComponent>(entity);
+            auto& mesh = registry->emplace<StaticMesh>(entity);
             loadMesh( &mesh, pathComponent.path.c_str() );
-        }
-        
-        const auto entities = registry->view<StaticMeshComponent>().each();
-        for (auto [entity, mesh] : entities)
-        {
-            auto& buffer = registry->emplace<MeshBufferComponent>( entity );
-            
-            const auto vertexDataSize = mesh.vertices.size() * sizeof( Vertex );
-            const auto indexDataSize = mesh.indices.size() * sizeof( uint16_t );
-            
-            buffer.vertexBuffer = Engine::getDevice()->newBuffer( vertexDataSize, MTL::ResourceStorageModeManaged );
-            buffer.indexBuffer = Engine::getDevice()->newBuffer( indexDataSize, MTL::ResourceStorageModeManaged );
-            
-            memcpy( buffer.vertexBuffer->contents(), mesh.vertices.data(), vertexDataSize );
-            memcpy( buffer.indexBuffer->contents(), mesh.indices.data(), indexDataSize );
-
-            buffer.vertexBuffer->didModifyRange( NS::Range::Make( 0, buffer.vertexBuffer->length() ) );
-            buffer.indexBuffer->didModifyRange( NS::Range::Make( 0, buffer.indexBuffer->length() ) );
         }
     }
 
-    auto MeshBufferSystem::loadMesh( StaticMeshComponent* mesh, const char * path) -> void
+    auto MeshLoadingSystem::loadMesh( StaticMesh* mesh, const char * path) -> void
     {
         tinyobj::ObjReaderConfig readerConfig;
         readerConfig.mtl_search_path = "/Users/robinleman/GitHub/lava/lava/content/models";

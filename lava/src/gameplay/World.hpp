@@ -22,6 +22,6 @@ namespace lava
     private:
         entt::registry* registry;
         Scene* scene;
-        std::array<System*, 4> systems;
+        std::array<System*, 3> systems;
     };
 }

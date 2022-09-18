@@ -15,19 +15,18 @@
 		D6617A0428BADBD20001C95A /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661790928BADBD00001C95A /* Window.cpp */; };
 		D6617A0528BADBD20001C95A /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661790C28BADBD00001C95A /* System.cpp */; };
 		D6617A0628BADBD20001C95A /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661790D28BADBD00001C95A /* Engine.cpp */; };
-		D6617A0728BADBD20001C95A /* CameraBufferSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661791628BADBD00001C95A /* CameraBufferSystem.cpp */; };
-		D6617A0828BADBD20001C95A /* MeshBufferSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661791728BADBD00001C95A /* MeshBufferSystem.cpp */; };
+		D6617A0828BADBD20001C95A /* MeshLoadingSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661791728BADBD00001C95A /* MeshLoadingSystem.cpp */; };
 		D6617A0928BADBD20001C95A /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661791A28BADBD00001C95A /* World.cpp */; };
 		D6617A0A28BADBD20001C95A /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D661791B28BADBD00001C95A /* Main.cpp */; };
 		D6617A0B28BADBD20001C95A /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = D66179F228BADBD10001C95A /* tiny_obj_loader.cc */; };
 		D6617A0C28BADBD20001C95A /* shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = D66179FC28BADBD20001C95A /* shader.metal */; };
-		D6617A0F28BAE48F0001C95A /* TransformBufferSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A0E28BAE48F0001C95A /* TransformBufferSystem.cpp */; };
 		D6617A1628BAE8050001C95A /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A1528BAE8050001C95A /* Math.cpp */; };
 		D6617A1E28C675C20001C95A /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6617A1D28C675C20001C95A /* GameController.framework */; };
 		D6617A2128C676750001C95A /* Input.mm in Sources */ = {isa = PBXBuildFile; fileRef = D6617A2028C676750001C95A /* Input.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D6617A2528C6839F0001C95A /* InputProxy.mm in Sources */ = {isa = PBXBuildFile; fileRef = D6617A2428C6839F0001C95A /* InputProxy.mm */; };
 		D6617A3128CD05A90001C95A /* CameraControlSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A3028CD05080001C95A /* CameraControlSystem.cpp */; };
 		D6617A3828CE6CBE0001C95A /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6617A3628CE6CBE0001C95A /* Scene.cpp */; };
+		D6E2DC0828D679EE0059DB55 /* BufferSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6E2DC0628D679E50059DB55 /* BufferSystem.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,13 +58,11 @@
 		D661790D28BADBD00001C95A /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 		D661790E28BADBD00001C95A /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
 		D661791028BADBD00001C95A /* World.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
-		D661791228BADBD00001C95A /* TransformComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TransformComponent.hpp; sourceTree = "<group>"; };
-		D661791328BADBD00001C95A /* MeshComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MeshComponent.hpp; sourceTree = "<group>"; };
-		D661791428BADBD00001C95A /* CameraComponent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CameraComponent.hpp; sourceTree = "<group>"; };
-		D661791628BADBD00001C95A /* CameraBufferSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = CameraBufferSystem.cpp; sourceTree = "<group>"; };
-		D661791728BADBD00001C95A /* MeshBufferSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshBufferSystem.cpp; sourceTree = "<group>"; };
-		D661791828BADBD00001C95A /* MeshBufferSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MeshBufferSystem.hpp; sourceTree = "<group>"; };
-		D661791928BADBD00001C95A /* CameraBufferSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CameraBufferSystem.hpp; sourceTree = "<group>"; };
+		D661791228BADBD00001C95A /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
+		D661791328BADBD00001C95A /* Mesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
+		D661791428BADBD00001C95A /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		D661791728BADBD00001C95A /* MeshLoadingSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MeshLoadingSystem.cpp; sourceTree = "<group>"; };
+		D661791828BADBD00001C95A /* MeshLoadingSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MeshLoadingSystem.hpp; sourceTree = "<group>"; };
 		D661791A28BADBD00001C95A /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		D661791B28BADBD00001C95A /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		D661791F28BADBD00001C95A /* MTLTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MTLTypes.hpp; sourceTree = "<group>"; };
@@ -257,8 +254,6 @@
 		D66179FF28BADBD20001C95A /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
 		D6617A0028BADBD20001C95A /* cornell_box.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cornell_box.mtl; sourceTree = "<group>"; };
 		D6617A0128BADBD20001C95A /* quad.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = quad.obj; sourceTree = "<group>"; };
-		D6617A0D28BAE48F0001C95A /* TransformBufferSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TransformBufferSystem.hpp; sourceTree = "<group>"; };
-		D6617A0E28BAE48F0001C95A /* TransformBufferSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TransformBufferSystem.cpp; sourceTree = "<group>"; };
 		D6617A1328BAE7520001C95A /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
 		D6617A1528BAE8050001C95A /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		D6617A1D28C675C20001C95A /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
@@ -277,6 +272,10 @@
 		D6617A3D28CE7CF90001C95A /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
 		D6617A3E28CEDE7D0001C95A /* ChessKing.obj.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChessKing.obj.mtl; sourceTree = "<group>"; };
 		D6617A3F28CEDE7D0001C95A /* ChessKing.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChessKing.obj; sourceTree = "<group>"; };
+		D6E2DC0328D677FD0059DB55 /* RenderData.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = RenderData.hpp; sourceTree = "<group>"; };
+		D6E2DC0428D678A90059DB55 /* Light.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Light.hpp; sourceTree = "<group>"; };
+		D6E2DC0628D679E50059DB55 /* BufferSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BufferSystem.cpp; sourceTree = "<group>"; };
+		D6E2DC0728D679E50059DB55 /* BufferSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferSystem.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -340,9 +339,9 @@
 			isa = PBXGroup;
 			children = (
 				D661790328BADBD00001C95A /* Renderer.hpp */,
+				D661790628BADBD00001C95A /* Renderer.cpp */,
 				D661790528BADBD00001C95A /* View.hpp */,
 				D661790428BADBD00001C95A /* View.cpp */,
-				D661790628BADBD00001C95A /* Renderer.cpp */,
 			);
 			path = renderer;
 			sourceTree = "<group>";
@@ -352,10 +351,10 @@
 			children = (
 				D6617A1F28C676400001C95A /* input */,
 				D661790828BADBD00001C95A /* Engine.hpp */,
-				D661790B28BADBD00001C95A /* Window.hpp */,
-				D661790A28BADBD00001C95A /* System.hpp */,
 				D661790D28BADBD00001C95A /* Engine.cpp */,
+				D661790B28BADBD00001C95A /* Window.hpp */,
 				D661790928BADBD00001C95A /* Window.cpp */,
+				D661790A28BADBD00001C95A /* System.hpp */,
 				D661790C28BADBD00001C95A /* System.cpp */,
 			);
 			path = core;
@@ -367,8 +366,8 @@
 				D661791528BADBD00001C95A /* systems */,
 				D661791128BADBD00001C95A /* components */,
 				D661791028BADBD00001C95A /* World.hpp */,
-				D6617A3728CE6CBE0001C95A /* Scene.hpp */,
 				D661791A28BADBD00001C95A /* World.cpp */,
+				D6617A3728CE6CBE0001C95A /* Scene.hpp */,
 				D6617A3628CE6CBE0001C95A /* Scene.cpp */,
 			);
 			path = gameplay;
@@ -377,9 +376,11 @@
 		D661791128BADBD00001C95A /* components */ = {
 			isa = PBXGroup;
 			children = (
-				D661791328BADBD00001C95A /* MeshComponent.hpp */,
-				D661791428BADBD00001C95A /* CameraComponent.hpp */,
-				D661791228BADBD00001C95A /* TransformComponent.hpp */,
+				D6E2DC0328D677FD0059DB55 /* RenderData.hpp */,
+				D661791328BADBD00001C95A /* Mesh.hpp */,
+				D661791428BADBD00001C95A /* Camera.hpp */,
+				D661791228BADBD00001C95A /* Transform.hpp */,
+				D6E2DC0428D678A90059DB55 /* Light.hpp */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -387,14 +388,12 @@
 		D661791528BADBD00001C95A /* systems */ = {
 			isa = PBXGroup;
 			children = (
-				D661791928BADBD00001C95A /* CameraBufferSystem.hpp */,
+				D661791828BADBD00001C95A /* MeshLoadingSystem.hpp */,
+				D661791728BADBD00001C95A /* MeshLoadingSystem.cpp */,
 				D6617A2F28C6EBA70001C95A /* CameraControlSystem.hpp */,
-				D661791828BADBD00001C95A /* MeshBufferSystem.hpp */,
-				D6617A0D28BAE48F0001C95A /* TransformBufferSystem.hpp */,
-				D661791628BADBD00001C95A /* CameraBufferSystem.cpp */,
 				D6617A3028CD05080001C95A /* CameraControlSystem.cpp */,
-				D661791728BADBD00001C95A /* MeshBufferSystem.cpp */,
-				D6617A0E28BAE48F0001C95A /* TransformBufferSystem.cpp */,
+				D6E2DC0728D679E50059DB55 /* BufferSystem.hpp */,
+				D6E2DC0628D679E50059DB55 /* BufferSystem.cpp */,
 			);
 			path = systems;
 			sourceTree = "<group>";
@@ -935,6 +934,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6E2DC0828D679EE0059DB55 /* BufferSystem.cpp in Sources */,
 				D6617A3128CD05A90001C95A /* CameraControlSystem.cpp in Sources */,
 				D6617A2128C676750001C95A /* Input.mm in Sources */,
 				D6617A0A28BADBD20001C95A /* Main.cpp in Sources */,
@@ -947,11 +947,9 @@
 				D6617A0928BADBD20001C95A /* World.cpp in Sources */,
 				D6617A2528C6839F0001C95A /* InputProxy.mm in Sources */,
 				D6617A0428BADBD20001C95A /* Window.cpp in Sources */,
-				D6617A0828BADBD20001C95A /* MeshBufferSystem.cpp in Sources */,
+				D6617A0828BADBD20001C95A /* MeshLoadingSystem.cpp in Sources */,
 				D6617A0228BADBD20001C95A /* View.cpp in Sources */,
-				D6617A0F28BAE48F0001C95A /* TransformBufferSystem.cpp in Sources */,
 				D6617A0628BADBD20001C95A /* Engine.cpp in Sources */,
-				D6617A0728BADBD20001C95A /* CameraBufferSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

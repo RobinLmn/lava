@@ -7,7 +7,7 @@
 
 namespace lava
 {
-    struct CameraComponent
+    struct Camera
     {
         bool isMainCamera;
         
@@ -18,12 +18,5 @@ namespace lava
         
         float speed;
         float sensitivity;
-        
-        simd::float4x4 viewProjection;
-    };
-
-    struct CameraBufferComponent
-    {
-        MTL::Buffer* cameraBuffer;
     };
 }
