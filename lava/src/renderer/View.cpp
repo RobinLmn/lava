@@ -3,41 +3,25 @@
 
 namespace lava
 {
-    View::View( const CGRect& frame, MTL::Device* device, const World* world )
+    View::View( MTK::View* view, MTL::Device* device, const World* world )
+        : world( world )
+        , commandQueue( device->newCommandQueue() )
+        , renderer( new Renderer( device ) )
     {
-        view = MTK::View::alloc()->init( frame, device );
-
         view->setColorPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
-        view->setClearColor( MTL::ClearColor::Make( 0.1, 0.1, 0.1, 1.0 ) );
+        view->setClearColor( MTL::ClearColor::Make( 0.53, 0.81, 0.98, 1.0 ) );
         
-        view->setDepthStencilPixelFormat( MTL::PixelFormat::PixelFormatDepth16Unorm );
+        view->setDepthStencilPixelFormat( MTL::PixelFormat::PixelFormatDepth32Float );
         view->setClearDepth( 1.0f );
-
-        viewDelegate = new ViewDelegate( device, world );
-        view->setDelegate( viewDelegate );
     }
 
     View::~View()
-    {
-        view->release();
-        delete viewDelegate;
-    }
-
-    View::ViewDelegate::ViewDelegate( MTL::Device* device, const World* world )
-        : device( device->retain() ),
-          world( world )
-    {
-        commandQueue = device->newCommandQueue();
-        renderer = new Renderer( device );
-    }
-
-    View::ViewDelegate::~ViewDelegate()
     {
         commandQueue->release();
         delete renderer;
     }
 
-    auto View::ViewDelegate::drawInMTKView( MTK::View* view ) -> void
+    auto View::drawInMTKView( MTK::View* view) -> void
     {
         auto releasePool = NS::AutoreleasePool::alloc()->init();
         auto commandBuffer = commandQueue->commandBuffer();

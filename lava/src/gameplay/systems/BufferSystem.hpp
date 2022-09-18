@@ -1,15 +1,15 @@
 #pragma once
-
 #include <core/System.hpp>
 
 namespace lava
 {
-    class TransformSystem final : public System
+    class BufferSystem final : public System
     {
     public:
-        TransformSystem( entt::registry* );
+        BufferSystem ( entt::registry* );
         
     public:
         auto begin() -> void override;
+        auto update( double ) -> void override;
     };
 }

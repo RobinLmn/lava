@@ -5,9 +5,9 @@
 
 #include <core/Window.hpp>
 #include <renderer/View.hpp>
-
+#include <core/input/Input.hpp>
+#include <core/input/Key.hpp>
 #include <gameplay/World.hpp>
-
 #include <core/System.hpp>
 
 namespace lava
@@ -21,11 +21,12 @@ namespace lava
         
     public:
         
-        [[nodiscard]]
-        static auto get() -> Engine& { static Engine engine; return engine; };
+        [[nodiscard]] static auto get() -> Engine&;
+        [[nodiscard]] static auto getDevice() -> MTL::Device*;
         
-        [[nodiscard]]
-        auto getDevice() -> MTL::Device* { return device; };
+        static auto isKeyPressed( Key ) -> bool;
+        static auto setOnMouseScroll( std::function<void(float, float)> ) -> void;
+        static auto setOnMouseMove( std::function<void(float, float)> ) -> void;
         
         auto run() -> void;
         auto initialize() -> void;
@@ -40,6 +41,7 @@ namespace lava
         MTL::Device* device;
         View* view;
         World* world;
+        Input* input;
         
         std::chrono::high_resolution_clock* clock;
         std::chrono::steady_clock::time_point lastTime;

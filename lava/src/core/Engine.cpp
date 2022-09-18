@@ -5,15 +5,20 @@ namespace lava
 {
     auto Engine::initialize() -> void
     {
-        auto frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
-        
+        auto frame = (CGRect){ {100.0, 100.0}, {800, 800} };
         device = MTL::CreateSystemDefaultDevice();
+        auto mtkView = MTK::View::alloc()->init( frame, device );
+        
+        input = new Input();
+        
         window = new Window( frame );
         world = new World();
-        view = new View( frame, device, world );
+        view = new View( mtkView, device, world );
         
-        window->setWindowView(view->getView());
+        
+        window->setWindowView( mtkView );
         world->begin();
+        mtkView->setDelegate( view );
     }
 
     auto Engine::run() -> void
@@ -24,6 +29,7 @@ namespace lava
         auto* app = NS::Application::sharedApplication();
         
         clock = new std::chrono::high_resolution_clock();
+        lastTime = clock->now();
         
         app->setDelegate( &delegate );
         app->run();
@@ -33,10 +39,36 @@ namespace lava
 
     auto Engine::update() -> void
     {
-        const auto deltaTime = std::chrono::duration_cast<std::chrono::seconds>(clock->now() - lastTime).count();
+        using seconds = std::chrono::duration<double, std::ratio<1>>;
+        const auto deltaTime = std::chrono::duration_cast<seconds>(clock->now() - lastTime).count();
         lastTime = clock->now();
         
         world->update( deltaTime );
+    }
+
+    auto Engine::get() -> Engine&
+    {
+        static Engine engine;
+        return engine;
+    }
+
+    auto Engine::getDevice() -> MTL::Device*
+    {
+        return Engine::get().device;
+    }
+
+    auto Engine::isKeyPressed( Key key ) -> bool
+    {
+        return Engine::get().input->isKeyPressed( key );
+    }
+
+    auto Engine::setOnMouseScroll( std::function<void(float, float)> callback ) -> void
+    {
+        Engine::get().input->setOnMouseScroll( callback );
+    }
+    auto Engine::setOnMouseMove( std::function<void(float, float)> callback) -> void
+    {
+        Engine::get().input->setOnMouseMove( callback );
     }
 
     auto Engine::shutdown() -> void
@@ -44,6 +76,7 @@ namespace lava
         world->end();
         device->release();
         
+        delete input;
         delete window;
         delete view;
         delete world;

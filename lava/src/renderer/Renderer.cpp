@@ -1,22 +1,22 @@
 #include "Renderer.hpp"
 
-#include <core/Util.hpp>
+#include <util/Util.hpp>
 
 #include <gameplay/components/Transform.hpp>
 #include <gameplay/components/Mesh.hpp>
 #include <gameplay/components/Camera.hpp>
+#include <gameplay/components/RenderData.hpp>
 
 namespace
 {
-    auto getCameraBuffer( const lava::World* world ) -> MTL::Buffer*
+    using namespace lava;
+
+    auto getUniformBuffer( const lava::World* world ) -> MTL::Buffer*
     {
-        const auto entities = world->getRegistry()->view<const lava::Camera>().each();
-        for ( auto [entity, camera] : entities )
+        const auto entities = world->getRegistry()->view<const lava::UniformBuffer>().each();
+        for ( auto [entity, uniformBuffer] : entities )
         {
-            if ( camera.isMainCamera )
-            {
-                return camera.cameraBuffer;
-            }
+            return uniformBuffer.buffer;
         }
         return nullptr;
     }
@@ -49,7 +49,7 @@ namespace lava
         descriptor->setFragmentFunction( fragmentFunction );
         
         descriptor->colorAttachments()->object( 0 )->setPixelFormat( MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB );
-        descriptor->setDepthAttachmentPixelFormat( MTL::PixelFormat::PixelFormatDepth16Unorm );
+        descriptor->setDepthAttachmentPixelFormat( MTL::PixelFormat::PixelFormatDepth32Float );
         
         NS::Error* error = nullptr;
         pipelineState = device->newRenderPipelineState( descriptor, &error );
@@ -62,9 +62,9 @@ namespace lava
     auto Renderer::buildDepthStencilStates() -> void
     {
         auto* descriptor = MTL::DepthStencilDescriptor::alloc()->init();
-        descriptor->setDepthCompareFunction( MTL::CompareFunction::CompareFunctionLess );
+        descriptor->setDepthCompareFunction( MTL::CompareFunction::CompareFunctionLessEqual );
         descriptor->setDepthWriteEnabled( true );
-
+        
         depthStencilState = device->newDepthStencilState( descriptor );
 
         descriptor->release();
@@ -75,24 +75,20 @@ namespace lava
         encoder->setRenderPipelineState( pipelineState );
         encoder->setDepthStencilState( depthStencilState );
         
-        const auto cameraBuffer = getCameraBuffer( world );
+        encoder->setCullMode( MTL::CullMode::CullModeBack );
+        encoder->setTriangleFillMode( MTL::TriangleFillMode::TriangleFillModeFill );
+        encoder->setFrontFacingWinding( MTL::WindingCounterClockwise );
         
-        const auto entities = world->getRegistry()->view<const Mesh, const Transform>().each();
-        for ( auto [entity, mesh, transform] : entities )
+        const auto& uniformBuffer = getUniformBuffer( world );
+        
+        const auto entities = world->getRegistry()->view<const StaticMesh, const MeshBuffer, const ObjectBuffer>().each();
+        for ( auto [entity, mesh, meshBuffer, objectBuffer] : entities )
         {
-            encoder->setVertexBuffer( mesh.vertexBuffer, 0, 0 );
-            encoder->setVertexBuffer( transform.modelBuffer, 0, 1 );
-            encoder->setVertexBuffer( cameraBuffer, 0, 2 );
+            encoder->setVertexBuffer( meshBuffer.vertices, 0, 0 );
+            encoder->setVertexBuffer( objectBuffer.buffer, 0, 1 );
+            encoder->setVertexBuffer( uniformBuffer, 0, 2 );
             
-            encoder->setCullMode( MTL::CullModeBack );
-            encoder->setFrontFacingWinding( MTL::Winding::WindingCounterClockwise );
-
-            encoder->drawIndexedPrimitives( MTL::PrimitiveType::PrimitiveTypeTriangle,
-                                            mesh.indices.size(),
-                                            MTL::IndexType::IndexTypeUInt16,
-                                            mesh.indexBuffer,
-                                            0,
-                                            1 );
+            encoder->drawPrimitives(  MTL::PrimitiveType::PrimitiveTypeTriangle, 0, mesh.vertices.size(), 1 );
         }
     }
 }

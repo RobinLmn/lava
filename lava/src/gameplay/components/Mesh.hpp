@@ -4,6 +4,7 @@
 #include <MetalKit/MetalKit.hpp>
 #include <vector>
 #include <simd/simd.h>
+#include <string>
 
 namespace lava
 {
@@ -14,12 +15,14 @@ namespace lava
         simd::float3 color;
     };
 
-    struct Mesh
+    struct StaticMesh
     {
         std::vector<Vertex> vertices;
         std::vector<uint16_t> indices;
-        
-        MTL::Buffer* vertexBuffer;
-        MTL::Buffer* indexBuffer;
+    };
+
+    struct MeshPath
+    {
+        std::string path;
     };
 }

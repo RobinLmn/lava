@@ -1,22 +1,22 @@
 #pragma once
 
-#include <simd/simd.h>
-
 #include <Metal/Metal.hpp>
 #include <MetalKit/MetalKit.hpp>
+
+#include <simd/simd.h>
 
 namespace lava
 {
     struct Camera
     {
+        bool isMainCamera;
+        
         float far;
         float near;
         float fov;
         float aspect;
         
-        simd::float4x4 viewProjection;
-        bool isMainCamera;
-        
-        MTL::Buffer* cameraBuffer;
+        float speed;
+        float sensitivity;
     };
 }

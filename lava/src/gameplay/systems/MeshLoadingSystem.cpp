@@ -1,39 +1,29 @@
-#include "MeshSystem.hpp"
+#include "MeshLoadingSystem.hpp"
 
-#include <Metal/Metal.hpp>
-#include <MetalKit/MetalKit.hpp>
 #include <tinyobjloader/tiny_obj_loader.h>
 #include <core/Engine.hpp>
-
 #include <iostream>
+
+#include <gameplay/components/Mesh.hpp>
 
 namespace lava
 {
-    MeshSystem::MeshSystem( entt::registry* registry )
+    MeshLoadingSystem::MeshLoadingSystem( entt::registry* registry )
             : System(registry)
     {
     }
 
-    auto MeshSystem::begin() -> void
+    auto MeshLoadingSystem::begin() -> void
     {
-        const auto entities = registry->view<Mesh>().each();
-        for (auto [entity, mesh] : entities)
+        const auto entities = registry->view<const MeshPath>().each();
+        for (auto [entity, pathComponent] : entities)
         {
-            const auto vertexDataSize = mesh.vertices.size() * sizeof( Vertex );
-            const auto indexDataSize = mesh.indices.size() * sizeof( uint16_t );
-            
-            mesh.vertexBuffer = Engine::get().getDevice()->newBuffer( vertexDataSize, MTL::ResourceStorageModeManaged );
-            mesh.indexBuffer = Engine::get().getDevice()->newBuffer( indexDataSize, MTL::ResourceStorageModeManaged );
-            
-            memcpy( mesh.vertexBuffer->contents(), mesh.vertices.data(), vertexDataSize );
-            memcpy( mesh.indexBuffer->contents(), mesh.indices.data(), indexDataSize );
-
-            mesh.vertexBuffer->didModifyRange( NS::Range::Make( 0, mesh.vertexBuffer->length() ) );
-            mesh.indexBuffer->didModifyRange( NS::Range::Make( 0, mesh.indexBuffer->length() ) );
+            auto& mesh = registry->emplace<StaticMesh>(entity);
+            loadMesh( &mesh, pathComponent.path.c_str() );
         }
     }
 
-    auto MeshSystem::loadMesh( Mesh* mesh, const char * path) -> void
+    auto MeshLoadingSystem::loadMesh( StaticMesh* mesh, const char * path) -> void
     {
         tinyobj::ObjReaderConfig readerConfig;
         readerConfig.mtl_search_path = "/Users/robinleman/GitHub/lava/lava/content/models";
@@ -69,11 +59,12 @@ namespace lava
                 // Loop over vertices in the face.
                 for (size_t v = 0; v < fv; v++)
                 {
+                    tinyobj::index_t idx = shapes[s].mesh.indices[index_offset];
+                    
                     // position
-                    tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-                    tinyobj::real_t vx = attrib.vertices[3*size_t(idx.vertex_index)+0];
-                    tinyobj::real_t vy = attrib.vertices[3*size_t(idx.vertex_index)+1];
-                    tinyobj::real_t vz = attrib.vertices[3*size_t(idx.vertex_index)+2];
+                    tinyobj::real_t vx = attrib.vertices[3 * idx.vertex_index + 0];
+                    tinyobj::real_t vy = attrib.vertices[3 * idx.vertex_index + 1];
+                    tinyobj::real_t vz = attrib.vertices[3 * idx.vertex_index + 2];
 
                     tinyobj::real_t nx = 0;
                     tinyobj::real_t ny = 0;
@@ -81,9 +72,9 @@ namespace lava
 
                     if (idx.normal_index >= 0)
                     {
-                        nx = attrib.normals[3*size_t(idx.normal_index)+0];
-                        ny = attrib.normals[3*size_t(idx.normal_index)+1];
-                        nz = attrib.normals[3*size_t(idx.normal_index)+2];
+                        nx = attrib.normals[3 * idx.normal_index +0];
+                        ny = attrib.normals[3 * idx.normal_index +1];
+                        nz = attrib.normals[3 * idx.normal_index +2];
                     }
 
                     Vertex vertex;
@@ -91,14 +82,14 @@ namespace lava
                     vertex.normal = {nx, ny, nz};
                     
                     auto color = materials[materialID].diffuse;
-                    vertex.color = { color[0], color[1], color[2] } ;
+                    vertex.color = { 0.9f, 0.9f, 0.9f } ;
 
                     mesh->vertices.emplace_back(vertex);
                     mesh->indices.emplace_back(i);
 
+                    index_offset++;
                     i++;
                 }
-                index_offset += fv;
             }
         }
     }
